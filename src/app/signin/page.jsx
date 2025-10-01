@@ -41,42 +41,6 @@ const page = () => {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     const res = await fetch("/api/auth/signin", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ email, password }),
-  //     });
-  //     console.log(res,"response")
-  //     const data = await res.json();
-
-  //     if (!res.ok) {
-  //       alert(data.error || "Something went wrong");
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     // Login successful → JWT is stored in HttpOnly cookie
-  //     alert("Login successful!");
-  //     setEmail("");
-  //     setPassword("");
-
-  //     // Redirect to homepage (protected)
-  //     router.push("/");
-
-  //   } catch (error) {
-  //     console.error(error);
-  //     alert("An error occurred. Please try again.");
-  //     setLoading(false);
-  //   }
-  // };
-
 
   return (
    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
