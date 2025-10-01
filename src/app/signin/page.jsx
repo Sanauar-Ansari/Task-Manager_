@@ -2,35 +2,27 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 const page = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await axios.post(
+        "/api/auth/signin",
+        { email, password },
+        { withCredentials: true } // ✅ important so cookies are included
+      );
 
-      const data = await res.json();
+      // console.log(res.data, "response");
 
-      if (!res.ok) {
-        alert(data.error || "Something went wrong");
-        setLoading(false);
-        return;
-      }
-
-      // Login successful → JWT is stored in HttpOnly cookie
-      alert("Login successful!");
+      alert(res.data.message);
       setEmail("");
       setPassword("");
 
@@ -39,19 +31,53 @@ const page = () => {
 
     } catch (error) {
       console.error(error);
-      alert("An error occurred. Please try again.");
+      if (error.response) {
+        alert(error.response.data.error || "Something went wrong");
+      } else {
+        alert("An error occurred. Please try again.");
+      }
+    } finally {
       setLoading(false);
     }
   };
 
-// const handleSubmit = (e) => {
-// e.preventDefault();
-// // Replace with actual API call (e.g., /api/auth/login)
-// console.log("Login data:", { name, password });
-// alert("Login submitted — check console.");
-// setEmail("");
-// setPassword("");
-// };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     const res = await fetch("/api/auth/signin", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ email, password }),
+  //     });
+  //     console.log(res,"response")
+  //     const data = await res.json();
+
+  //     if (!res.ok) {
+  //       alert(data.error || "Something went wrong");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     // Login successful → JWT is stored in HttpOnly cookie
+  //     alert("Login successful!");
+  //     setEmail("");
+  //     setPassword("");
+
+  //     // Redirect to homepage (protected)
+  //     router.push("/");
+
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert("An error occurred. Please try again.");
+  //     setLoading(false);
+  //   }
+  // };
+
+
   return (
    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
 <main className="w-full max-w-sm bg-white border border-gray-200 rounded-2xl shadow-lg p-8">

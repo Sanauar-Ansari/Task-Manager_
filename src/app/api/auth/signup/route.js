@@ -57,8 +57,8 @@ export async function POST(req) {
       password: hashedPassword,
     });
 
-    // ✅ Return proper JSON response
-    return new Response(JSON.stringify({ message: "Signup successful" }), { status: 201 });
+    // ✅ Return proper JSON response || new Response  way to write for hosting
+    return new Response(JSON.stringify({ message: "Signup successful, Please Login"  }), { status: 201 });
 
   } catch (error) {
     console.error(error);

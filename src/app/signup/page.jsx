@@ -1,64 +1,50 @@
 // import React from 'react'
 "use client";
-
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // for redirecting after login
-
+import axios from "axios";
 const page = () => {
-// const [email, setEmail] = useState("");
-// const [password, setPassword] = useState("");
-
-
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name,email, password }),
-      });
+      const res = await axios.post(
+        "/api/auth/signup",
+        { name, email, password },
+        { withCredentials: true } // keep cookies consistent
+      );
 
-      const data = await res.json();
+      // console.log(res.data, "response");
 
-      if (!res.ok) {
-        alert(data.error || "Something went wrong");
-        setLoading(false);
-        return;
-      }
-
-      // ✅ Login successful, JWT is stored in HttpOnly cookie by API
-      alert("Signup successful, Please login");
+      alert(res.data.message);
+      setName("");
       setEmail("");
       setPassword("");
 
-      // Redirect to homepage (protected)
+      // Redirect to signin page after signup
       router.push("/signin");
 
     } catch (error) {
       console.error(error);
-      alert("An error occurred. Please try again.");
+
+      if (error.response) {
+        alert(error.response.data.error || "Something went wrong");
+      } else {
+        alert("An error occurred. Please try again.");
+      }
+    } finally {
       setLoading(false);
     }
   };
 
-// const handleSubmit = (e) => {
-// e.preventDefault();
-// // Replace with actual API call (e.g., /api/auth/signup)
-// alert("Signup submitted — check console.");
-// setEmail("");
-// setPassword("");
-// };
   return (
 <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
 <main className="w-full max-w-sm bg-white border border-gray-200 rounded-2xl shadow-lg p-8">
