@@ -14,7 +14,7 @@ export default function TaskManager({ email }) {
   }, []);
 
   const fetchTasks = async () => {
-    const res = await fetch("/api/tasks");
+    const res = await fetch("/tasks");
     const data = await res.json();
     setTasks(data);
   };
@@ -25,7 +25,7 @@ export default function TaskManager({ email }) {
     const taskData = { title, description };
 
     if (editingTask) {
-      const res = await fetch(`/api/tasks/${editingTask._id}`, {
+      const res = await fetch(`/tasks/${editingTask._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(taskData),
@@ -35,7 +35,7 @@ export default function TaskManager({ email }) {
         setEditingTask(null);
       }
     } else {
-      const res = await fetch("/api/tasks", {
+      const res = await fetch("/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(taskData),
@@ -50,7 +50,7 @@ export default function TaskManager({ email }) {
 
   // Delete task
   const handleDelete = async (id) => {
-    const res = await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+    const res = await fetch(`/tasks/${id}`, { method: "DELETE" });
     if (res.ok) {
       fetchTasks();
     }
