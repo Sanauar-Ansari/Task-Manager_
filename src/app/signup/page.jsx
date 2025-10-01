@@ -17,7 +17,7 @@ const page = () => {
 
     try {
       const res = await axios.post(
-        "/api/auth/signup",
+        "/auth/signup",
         { name, email, password },
         { withCredentials: true } // keep cookies consistent
       );
@@ -122,16 +122,14 @@ className="mt-1 block w-full rounded-lg  px-4 py-2 placeholder-gray-400 focus:ou
 />
 </div>
 
-
 <button
 type="submit"
+disabled={loading}
 className="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
 >
-Create account
+{loading ? "Creating User..." : " Create account"}  
 </button>
 </form>
-
-
 <p className="text-xs text-gray-500 text-center mt-4">
 Already have account, Please <Link href="/signin" className="text-indigo-600">Login</Link>
 </p>

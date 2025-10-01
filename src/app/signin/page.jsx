@@ -139,7 +139,7 @@ const SigninPage = () => {
 
     try {
       const res = await axios.post(
-        "/api/auth/signin", // ✅ always API route
+        "/auth/signin", // ✅ always API route
         { email, password },
         { withCredentials: true }
       );
